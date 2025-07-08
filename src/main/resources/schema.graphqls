@@ -1,0 +1,67 @@
+type Query {
+    getAllPosts: [Post]
+    getUserByEmail(email: String!): User
+    getNotifications(userId: ID!): [Notification]
+}
+
+type Mutation {
+    registerUser(username: String!, email: String!, password: String!): AuthResponse
+    login(email: String!, password: String!): AuthResponse
+    requestUploadAccess(userId: ID!): UploadRequest
+    approveUploadRequest(requestId: ID!): UploadRequest
+    createPost(userId: ID!, caption: String!, mediaUrls: [String!]!): Post
+    addComment(postId: ID!, userId: ID!, content: String!, type: String!): Comment
+}
+
+type AuthResponse {
+    token: String!
+    user: User!
+}
+
+type User {
+    id: ID!
+    username: String!
+    email: String!
+    role: String!
+    canUpload: Boolean!
+}
+
+type Post {
+    id: ID!
+    caption: String!
+    user: User!
+    media: [Media]!
+    createdAt: String!
+}
+
+type Media {
+    id: ID!
+    url: String!
+    type: String!
+    compressed: Boolean!
+}
+
+type Comment {
+    id: ID!
+    user: User!
+    content: String!
+    type: String!
+    createdAt: String!
+    expiresAt: String
+}
+
+type UploadRequest {
+    id: ID!
+    user: User!
+    status: String!
+    requestedAt: String!
+}
+
+type Notification {
+    id: ID!
+    user: User!
+    message: String!
+    seen: Boolean!
+    createdAt: String!
+}
+

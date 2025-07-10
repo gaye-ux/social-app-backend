@@ -1,7 +1,7 @@
 package com.socialapp.service;
 
 import com.socialapp.entity.UploadRequest;
-import com.socialapp.entity.User;
+import com.socialapp.entity.Users;
 import com.socialapp.repository.UploadRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class UploadRequestService {
     private final UploadRequestRepository uploadRequestRepository;
 
-    public UploadRequest requestAccess(User user) {
+    public UploadRequest requestAccess(Users user) {
         UploadRequest req = UploadRequest.builder()
                 .user(user)
                 .status("PENDING")
@@ -23,7 +23,7 @@ public class UploadRequestService {
         return uploadRequestRepository.save(req);
     }
 
-    public Optional<UploadRequest> findByUser(User user) {
+    public Optional<UploadRequest> findByUser(Users user) {
         return uploadRequestRepository.findByUser(user);
     }
 

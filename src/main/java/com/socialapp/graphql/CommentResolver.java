@@ -2,7 +2,7 @@ package com.socialapp.graphql;
 
 import com.socialapp.entity.Comment;
 import com.socialapp.entity.Post;
-import com.socialapp.entity.User;
+import com.socialapp.entity.Users;
 import com.socialapp.service.CommentService;
 import com.socialapp.service.PostService;
 import com.socialapp.service.UserService;
@@ -22,7 +22,7 @@ public class CommentResolver {
     @MutationMapping
     public Comment addComment(Long postId, Long userId, String content, String type) {
         Post post = Post.builder().id(postId).build();
-        User user = User.builder().id(userId).build();
+        Users user = Users.builder().id(userId).build();
 
         Comment comment = Comment.builder()
                 .post(post)

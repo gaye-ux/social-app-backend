@@ -1,11 +1,10 @@
 package com.socialapp.graphql;
 
-import com.socialapp.entity.User;
+import com.socialapp.entity.Users;
 import com.socialapp.security.JwtUtil;
 import com.socialapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
-import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
 import java.util.HashMap;
@@ -19,12 +18,12 @@ public class AuthResolver {
 
     @MutationMapping
     public Map<String, Object> registerUser(String username, String email, String password) {
-        User user = User.builder()
+        Users user = Users.builder()
                 .username(username)
                 .email(email)
                 .password(password)
                 .build();
-        User savedUser = userService.register(user);
+        Users savedUser = userService.register(user);
         String token = jwtUtil.generateToken(savedUser.getEmail());
 
         Map<String, Object> response = new HashMap<>();
@@ -35,7 +34,7 @@ public class AuthResolver {
 
     @MutationMapping
     public Map<String, Object> login(String email, String password) {
-        User user = userService.findByEmail(email)
+        Users user = userService.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         // NOTE: In production, compare hashed password with encoder

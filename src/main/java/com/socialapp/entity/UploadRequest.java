@@ -17,7 +17,7 @@ public class UploadRequest {
     private Long id;
 
     @ManyToOne
-    private User user;
+    private Users user;
 
     private String status; // PENDING, APPROVED, REJECTED
     private LocalDateTime requestedAt;

@@ -1,7 +1,7 @@
 package com.socialapp.graphql;
 
 import com.socialapp.entity.UploadRequest;
-import com.socialapp.entity.User;
+import com.socialapp.entity.Users;
 import com.socialapp.service.UploadRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -15,7 +15,7 @@ public class UploadRequestResolver {
 
     @MutationMapping
     public UploadRequest requestUploadAccess(Long userId) {
-        return uploadRequestService.requestAccess(User.builder().id(userId).build());
+        return uploadRequestService.requestAccess(Users.builder().id(userId).build());
     }
 
     @MutationMapping

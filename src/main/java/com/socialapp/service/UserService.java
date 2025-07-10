@@ -1,9 +1,8 @@
 package com.socialapp.service;
 
-import com.socialapp.entity.User;
+import com.socialapp.entity.Users;
 import com.socialapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +18,17 @@ public class UserService {
 
 
 
-    public Optional<User> findByEmail(String email) {
+    public Optional<Users> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    public User register(User user) {
+    public Users register(Users user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("USER");
         return userRepository.save(user);
     }
 
-    public User save(User user) {
+    public Users save(Users user) {
         return userRepository.save(user);
     }
 }

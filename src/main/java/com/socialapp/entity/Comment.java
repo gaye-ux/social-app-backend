@@ -20,7 +20,7 @@ public class Comment {
     private Post post;
 
     @ManyToOne
-    private User user;
+    private Users user;
 
     private String content; // audio url or text
     private String type; // text or audio

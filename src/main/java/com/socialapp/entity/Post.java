@@ -20,7 +20,7 @@ public class Post {
     private String caption;
 
     @ManyToOne
-    private User user;
+    private Users user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Media> media;

@@ -17,7 +17,7 @@ public class Notification {
     private Long id;
 
     @ManyToOne
-    private User user;
+    private Users user;
 
     private String message;
     private boolean seen;

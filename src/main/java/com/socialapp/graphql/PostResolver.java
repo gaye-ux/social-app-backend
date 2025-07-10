@@ -2,7 +2,7 @@ package com.socialapp.graphql;
 
 import com.socialapp.entity.Media;
 import com.socialapp.entity.Post;
-import com.socialapp.entity.User;
+import com.socialapp.entity.Users;
 import com.socialapp.service.MediaService;
 import com.socialapp.service.PostService;
 import com.socialapp.service.UserService;
@@ -11,7 +11,6 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class PostResolver {
 
     @MutationMapping
     public Post createPost(Long userId, String caption, List<String> mediaUrls) {
-        User user = userService.save(User.builder().id(userId).build());
+        Users user = userService.save(Users.builder().id(userId).build());
 
         List<Media> mediaList = new ArrayList<>();
         for (String url : mediaUrls) {

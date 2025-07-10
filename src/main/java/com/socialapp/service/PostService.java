@@ -2,7 +2,7 @@ package com.socialapp.service;
 
 import com.socialapp.entity.Media;
 import com.socialapp.entity.Post;
-import com.socialapp.entity.User;
+import com.socialapp.entity.Users;
 import com.socialapp.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
 
-    public Post createPost(String caption, User user, List<Media> media) {
+    public Post createPost(String caption, Users user, List<Media> media) {
         Post post = Post.builder()
                 .caption(caption)
                 .user(user)

@@ -1,7 +1,7 @@
 package com.socialapp.service;
 
 import com.socialapp.entity.Notification;
-import com.socialapp.entity.User;
+import com.socialapp.entity.Users;
 import com.socialapp.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 public class NotificationService {
     private final NotificationRepository notificationRepository;
 
-    public Notification notifyUser(User user, String message) {
+    public Notification notifyUser(Users user, String message) {
         Notification notification = Notification.builder()
                 .user(user)
                 .message(message)

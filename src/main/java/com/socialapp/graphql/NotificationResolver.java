@@ -3,6 +3,7 @@ package com.socialapp.graphql;
 import com.socialapp.entity.Notification;
 import com.socialapp.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
@@ -15,7 +16,7 @@ public class NotificationResolver {
     private final NotificationService notificationService;
 
     @QueryMapping
-    public List<Notification> getNotifications(Long userId) {
+    public List<Notification> getNotifications(@Argument Long userId) {
         return notificationService.getByUserId(userId);
     }
 }

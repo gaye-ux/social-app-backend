@@ -3,10 +3,12 @@ package com.socialapp.graphql;
 import com.socialapp.entity.Media;
 import com.socialapp.entity.Post;
 import com.socialapp.entity.Users;
+import com.socialapp.repository.UserRepository;
 import com.socialapp.service.MediaService;
 import com.socialapp.service.PostService;
 import com.socialapp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
@@ -18,8 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostResolver {
     private final PostService postService;
+
     private final UserService userService;
+
     private final MediaService mediaService;
+
+    private final UserRepository userRepository;
 
     @QueryMapping
     public List<Post> getAllPosts() {
@@ -27,19 +33,22 @@ public class PostResolver {
     }
 
     @MutationMapping
-    public Post createPost(Long userId, String caption, List<String> mediaUrls) {
-        Users user = userService.save(Users.builder().id(userId).build());
+    public Post createPost(@Argument Long userId, @Argument String caption, @Argument List<String> mediaUrls) {
+        Users user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Creating Post Not Found"));
 
         List<Media> mediaList = new ArrayList<>();
-        for (String url : mediaUrls) {
-            Media media = Media.builder()
-                    .url(url)
-                    .type(url.endsWith(".mp4") ? "video" : "image")
-                    .compressed(true)
-                    .build();
-            mediaService.save(media);
-            mediaList.add(media);
+        if (mediaUrls != null) {
+            for (String url : mediaUrls) {
+                Media media = Media.builder()
+                        .url(url)
+                        .type(url.endsWith(".mp4") ? "video" : "image")
+                        .compressed(true)
+                        .build();
+                mediaService.save(media);
+                mediaList.add(media);
+            }
         }
+
         return postService.createPost(caption, user, mediaList);
     }
 }

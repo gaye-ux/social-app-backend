@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,13 +19,16 @@ public class UserService {
 
 
 
-    public Optional<Users> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public Optional<Users> findByPhoneNo(int phoneNo) {
+        return userRepository.findByPhoneNo(phoneNo);
     }
+
+    public List<Users> getAllUsers(){ return userRepository.findAll(); }
 
     public Users register(Users user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("USER");
+        user.setCanUpload(true);
         return userRepository.save(user);
     }
 

@@ -7,6 +7,7 @@ import com.socialapp.service.CommentService;
 import com.socialapp.service.PostService;
 import com.socialapp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
 
@@ -20,7 +21,7 @@ public class CommentResolver {
     private final PostService postService;
 
     @MutationMapping
-    public Comment addComment(Long postId, Long userId, String content, String type) {
+    public Comment addComment(@Argument Long postId, @Argument Long userId,@Argument String content,@Argument String type) {
         Post post = Post.builder().id(postId).build();
         Users user = Users.builder().id(userId).build();
 

@@ -4,7 +4,10 @@ import com.socialapp.entity.Users;
 import com.socialapp.security.JwtUtil;
 import com.socialapp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 
 import java.util.HashMap;
@@ -16,15 +19,17 @@ public class AuthResolver {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     @MutationMapping
-    public Map<String, Object> registerUser(String username, String email, String password) {
+    public Map<String, Object> registerUser(@Argument String username,@Argument int phoneNo,@Argument String password) {
         Users user = Users.builder()
                 .username(username)
-                .email(email)
+                .phoneNo(phoneNo)
                 .password(password)
                 .build();
         Users savedUser = userService.register(user);
-        String token = jwtUtil.generateToken(savedUser.getEmail());
+        String token = jwtUtil.generateToken(String.valueOf(savedUser.getPhoneNo()));
 
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
@@ -33,16 +38,15 @@ public class AuthResolver {
     }
 
     @MutationMapping
-    public Map<String, Object> login(String email, String password) {
-        Users user = userService.findByEmail(email)
+    public Map<String, Object> login(@Argument int phoneNo,@Argument String password) {
+        Users user = userService.findByPhoneNo(phoneNo)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // NOTE: In production, compare hashed password with encoder
-        if (!password.equals(user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())){
             throw new RuntimeException("Invalid credentials");
         }
 
-        String token = jwtUtil.generateToken(email);
+        String token = jwtUtil.generateToken(String.valueOf(phoneNo));
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);
         response.put("user", user);

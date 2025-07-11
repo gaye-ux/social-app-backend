@@ -2,6 +2,8 @@ package com.socialapp.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.*;
 
@@ -17,13 +19,20 @@ public class Users {
     private Long id;
 
     private String username;
-    private String email;
+
+    private int phoneNo;
+
     private String password;
 
     private boolean canUpload = false;
+
     private String role;      // USER, ADMIN
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
+
+    private String profile_photo_url;
+
+    private String cover_photo_url;
 }
 

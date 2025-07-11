@@ -2,6 +2,8 @@ package com.socialapp.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -17,9 +19,12 @@ public class UploadRequest {
     private Long id;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "user_id", nullable = false)
     private Users user;
 
     private String status; // PENDING, APPROVED, REJECTED
+
     private LocalDateTime requestedAt;
 }
 

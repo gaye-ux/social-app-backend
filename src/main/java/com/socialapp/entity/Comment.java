@@ -2,6 +2,8 @@ package com.socialapp.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -17,9 +19,13 @@ public class Comment {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "post_id", nullable = false)
+    @OnDelete(action=OnDeleteAction.CASCADE)
     private Post post;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Users user;
 
     private String content; // audio url or text

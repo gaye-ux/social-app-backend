@@ -1,35 +1,36 @@
 type Query {
+    getAllUsers: [Users]
     getAllPosts: [Post]
-    getUserByEmail(email: String!): User
+    getUserByPhoneNo(phoneNo: Int!): Users
     getNotifications(userId: ID!): [Notification]
 }
 
 type Mutation {
-    registerUser(username: String!, email: String!, password: String!): AuthResponse
-    login(email: String!, password: String!): AuthResponse
+    registerUser(username: String!, phoneNo: Int!, password: String!): AuthResponse
+    login(phoneNo: Int!, password: String!): AuthResponse
     requestUploadAccess(userId: ID!): UploadRequest
     approveUploadRequest(requestId: ID!): UploadRequest
-    createPost(userId: ID!, caption: String!, mediaUrls: [String!]!): Post
+    createPost(userId: ID!, caption: String!, mediaUrls: [String]): Post
     addComment(postId: ID!, userId: ID!, content: String!, type: String!): Comment
 }
 
 type AuthResponse {
     token: String!
-    user: User!
+    user: Users!
 }
 
-type User {
+type Users {
     id: ID!
     username: String!
-    email: String!
+    phoneNo: Int!
     role: String!
-    canUpload: Boolean!
+    canUpload: Boolean
 }
 
 type Post {
     id: ID!
     caption: String!
-    user: User!
+    user: Users!
     media: [Media]!
     createdAt: String!
 }
@@ -43,7 +44,7 @@ type Media {
 
 type Comment {
     id: ID!
-    user: User!
+    user: Users!
     content: String!
     type: String!
     createdAt: String!
@@ -52,14 +53,14 @@ type Comment {
 
 type UploadRequest {
     id: ID!
-    user: User!
+    user: Users!
     status: String!
     requestedAt: String!
 }
 
 type Notification {
     id: ID!
-    user: User!
+    user: Users!
     message: String!
     seen: Boolean!
     createdAt: String!

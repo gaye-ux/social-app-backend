@@ -33,6 +33,7 @@ type Post {
     user: Users!
     media: [Media]!
     createdAt: String!
+    comments: [Comment]
 }
 
 type Media {
@@ -45,6 +46,7 @@ type Media {
 type Comment {
     id: ID!
     user: Users!
+    post: Post!
     content: String!
     type: String!
     createdAt: String!

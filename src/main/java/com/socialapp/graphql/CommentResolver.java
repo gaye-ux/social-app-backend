@@ -7,6 +7,7 @@ import com.socialapp.service.CommentService;
 import com.socialapp.service.PostService;
 import com.socialapp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
@@ -36,4 +37,6 @@ public class CommentResolver {
 
         return commentService.save(comment);
     }
+
+    @Query
 }

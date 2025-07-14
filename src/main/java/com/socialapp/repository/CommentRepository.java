@@ -9,5 +9,5 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByExpiresAtBefore(LocalDateTime time);
 
-    public List<Comment> findByPostId();
+    public List<Comment> findByPostId(int postId);
 }

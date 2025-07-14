@@ -21,8 +21,8 @@ public class CommentService {
         return commentRepository.findByExpiresAtBefore(LocalDateTime.now());
     }
 
-    public List<Comment> getCommentsByPostId(){
-      return  commentRepository.findByPostId();
+    public List<Comment> getCommentsByPostId(int postId){
+      return  commentRepository.findByPostId(postId);
     }
 
     public void delete(Comment comment) {

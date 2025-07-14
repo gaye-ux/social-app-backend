@@ -3,6 +3,7 @@ type Query {
     getAllPosts: [Post]
     getUserByPhoneNo(phoneNo: Int!): Users
     getNotifications(userId: ID!): [Notification]
+    getCommentsByPostId(postId: Int): [Comment]
 }
 
 type Mutation {

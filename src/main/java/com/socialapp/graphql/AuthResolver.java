@@ -22,7 +22,7 @@ public class AuthResolver {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @MutationMapping
-    public Map<String, Object> registerUser(@Argument String username,@Argument int phoneNo,@Argument String password) {
+    public Map<String, Object> registerUser(@Argument String username,@Argument String phoneNo,@Argument String password) {
         Users user = Users.builder()
                 .username(username)
                 .phoneNo(phoneNo)
@@ -38,13 +38,18 @@ public class AuthResolver {
     }
 
     @MutationMapping
-    public Map<String, Object> login(@Argument int phoneNo,@Argument String password) {
+    public Map<String, Object> login(@Argument String phoneNo,@Argument String password) {
         Users user = userService.findByPhoneNo(phoneNo)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!passwordEncoder.matches(password, user.getPassword())){
             throw new RuntimeException("Invalid credentials");
         }
+
+        // For testing purposes only
+//        if(!password.matches(user.getPassword())){
+//                  throw new RuntimeException("Invalid credentials");
+//        }
 
         String token = jwtUtil.generateToken(String.valueOf(phoneNo));
         Map<String, Object> response = new HashMap<>();

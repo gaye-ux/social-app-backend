@@ -20,5 +20,5 @@ public class UserResolver {
     public List<Users> getAllUsers(){return userService.getAllUsers();}
 
     @QueryMapping
-    public Optional<Users> getUserByPhoneNo(@Argument int phoneNo){ return userService.findByPhoneNo(phoneNo);}
+    public Optional<Users> getUserByPhoneNo(@Argument String phoneNo){ return userService.findByPhoneNo(phoneNo);}
 }

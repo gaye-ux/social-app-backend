@@ -1,5 +1,6 @@
 package com.socialapp.entity;
 
+import com.socialapp.constants.PostStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -30,5 +31,12 @@ public class Post {
     private List<Media> media;
 
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
+    @Enumerated(EnumType.STRING)
+    private PostStatus status;
+
 }
 

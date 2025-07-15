@@ -4,11 +4,12 @@ type Query {
     getUserByPhoneNo(phoneNo: Int!): Users
     getNotifications(userId: ID!): [Notification]
     getCommentsByPostId(postId: Int): [Comment]
+    getUserPosts(userId: ID!): [Post]
 }
 
 type Mutation {
-    registerUser(username: String!, phoneNo: Int!, password: String!): AuthResponse
-    login(phoneNo: Int!, password: String!): AuthResponse
+    registerUser(username: String!, phoneNo: String!, password: String!): AuthResponse
+    login(phoneNo: String!, password: String!): AuthResponse
     requestUploadAccess(userId: ID!): UploadRequest
     approveUploadRequest(requestId: ID!): UploadRequest
     createPost(userId: ID!, caption: String!, mediaUrls: [String]): Post
@@ -23,7 +24,7 @@ type AuthResponse {
 type Users {
     id: ID!
     username: String!
-    phoneNo: Int!
+    phoneNo: String!
     role: String!
     canUpload: Boolean
 }
@@ -35,6 +36,7 @@ type Post {
     media: [Media]!
     createdAt: String!
     comments: [Comment]
+    status: PostStatus
 }
 
 type Media {
@@ -68,4 +70,11 @@ type Notification {
     seen: Boolean!
     createdAt: String!
 }
+
+enum PostStatus {
+    approved
+    pending
+    rejected
+}
+
 

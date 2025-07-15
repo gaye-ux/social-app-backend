@@ -51,4 +51,9 @@ public class PostResolver {
 
         return postService.createPost(caption, user, mediaList);
     }
+
+    @QueryMapping
+    public List<Post> getUserPosts(@Argument int userId){
+        return postService.getUserPosts(userId);
+    }
 }

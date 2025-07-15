@@ -19,7 +19,7 @@ public class UserService {
 
 
 
-    public Optional<Users> findByPhoneNo(int phoneNo) {
+    public Optional<Users> findByPhoneNo(String phoneNo) {
         return userRepository.findByPhoneNo(phoneNo);
     }
 

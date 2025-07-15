@@ -20,7 +20,7 @@ public class Users {
 
     private String username;
 
-    private int phoneNo;
+    private String phoneNo;
 
     private String password;
 

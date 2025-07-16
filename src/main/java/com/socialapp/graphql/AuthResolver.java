@@ -42,14 +42,14 @@ public class AuthResolver {
         Users user = userService.findByPhoneNo(phoneNo)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!passwordEncoder.matches(password, user.getPassword())){
-            throw new RuntimeException("Invalid credentials");
-        }
+//        if (!passwordEncoder.matches(password, user.getPassword())){
+//            throw new RuntimeException("Invalid credentials");
+//        }
 
         // For testing purposes only
-//        if(!password.matches(user.getPassword())){
-//                  throw new RuntimeException("Invalid credentials");
-//        }
+        if(!password.matches(user.getPassword())){
+                  throw new RuntimeException("Invalid credentials");
+        }
 
         String token = jwtUtil.generateToken(String.valueOf(phoneNo));
         Map<String, Object> response = new HashMap<>();

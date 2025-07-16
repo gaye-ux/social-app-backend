@@ -17,11 +17,10 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public Post createPost(String caption, Users user, List<Media> media) {
+    public Post createPost(String caption, Users user) {
         Post post = Post.builder()
                 .caption(caption)
                 .user(user)
-                .media(media)
                 .createdAt(LocalDateTime.now())
                 .status(PostStatus.pending)
                 .build();

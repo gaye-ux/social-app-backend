@@ -36,6 +36,8 @@ public class PostResolver {
     public Post createPost(@Argument Long userId, @Argument String caption, @Argument List<String> mediaUrls) {
         Users user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Creating Post Not Found"));
 
+        Post post = postService.createPost(caption, user);
+
         List<Media> mediaList = new ArrayList<>();
         if (mediaUrls != null) {
             for (String url : mediaUrls) {
@@ -43,13 +45,16 @@ public class PostResolver {
                         .url(url)
                         .type(url.endsWith(".mp4") ? "video" : "image")
                         .compressed(true)
+                        .post(post)
                         .build();
                 mediaService.save(media);
                 mediaList.add(media);
             }
         }
 
-        return postService.createPost(caption, user, mediaList);
+        post.setMedia(mediaList);
+
+        return post;
     }
 
     @QueryMapping

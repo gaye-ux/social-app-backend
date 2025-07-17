@@ -1,5 +1,6 @@
 package com.socialapp.service;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import jakarta.annotation.PostConstruct;
@@ -7,19 +8,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.net.URI;
+
 
 @Service
 public class UploadService {
 
-    private static final Map<String, Object> EMPTY_UPLOAD_OPTIONS = Collections.emptyMap();
-
-    private final Map<String, String> config = new ConcurrentHashMap<>();
     private Cloudinary cloudinary;
+    private final Map<String, String> config = new ConcurrentHashMap<>();
 
     @Value("${cloudinary.cloudName}")
     public void setCloudName(String cloudName) {
@@ -41,18 +41,36 @@ public class UploadService {
         this.cloudinary = new Cloudinary(config);
     }
 
-    public String uploadFile(File file) {
+    public String uploadFile(MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            throw new FileUploadException("File cannot be null or empty", null);
+        }
+
         try {
             Map<?, ?> uploadResult = cloudinary.uploader()
-                    .upload(file, ObjectUtils.emptyMap()); // or your upload options
-            return (String) uploadResult.get("secure_url");
+                    //auto to allow file media types
+                    .upload(file.getBytes(), ObjectUtils.asMap("resource_type", "auto"));
+            String url = (String) uploadResult.get("secure_url");
+
+            // First remove all whitespace
+            String cleanUrl = url.replaceAll("\\s+", "");
+
+            // Fix common protocol formatting issue
+            cleanUrl = cleanUrl.replace("https: //", "https://");
+
+            try {
+                URI uri = new URI(cleanUrl);
+                System.out.println("The URL: "+ uri);
+                return uri.toASCIIString();
+            } catch (URISyntaxException e) {
+                // Fallback to manual cleaning if URI parsing fails
+                return cleanUrl.replaceAll("[^a-zA-Z0-9:/._-]", "");
+            }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to upload file to Cloudinary", e);
+            throw new FileUploadException("Upload failed", e);
         }
     }
 
-
-    // Custom exception for better error handling
     public static class FileUploadException extends RuntimeException {
         public FileUploadException(String message, Throwable cause) {
             super(message, cause);
